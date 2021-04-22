@@ -38,5 +38,19 @@ namespace ParkyAPI.Controllers
 
             return Ok(objDto);
         }
+
+        [HttpGet("{parqueNacionalId:int}")]
+        public IActionResult GetParqueNacional(int parqueNacionalId)
+        {
+            var obj = _pnRepository.GetParqueNacional(parqueNacionalId);
+
+            if(obj == null)
+            {
+                return NotFound();
+            }
+
+            var objDto = _mapper.Map<ParqueNacionalDto>(obj);
+            return Ok(obj);
+        }
     }
 }
