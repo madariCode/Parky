@@ -78,5 +78,24 @@ namespace ParkyAPI.Controllers
 
             return CreatedAtRoute("GetParqueNacional", new { parqueNacionalId = parqueNacionalObj.Id}, parqueNacionalObj);
         }
+
+        [HttpPatch("{parqueNacionalId:int}", Name = "ActualizarParqueNacional")]
+        public IActionResult ActualizarParqueNacional(int parqueNacionalId, [FromBody] ParqueNacionalDto parqueNacionalDto) 
+        {
+            if (parqueNacionalDto == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var parqueNacionalObj = _mapper.Map<ParqueNacional>(parqueNacionalDto);
+
+            if (!_pnRepository.UpdateParqueNacional(parqueNacionalObj))
+            {
+                ModelState.AddModelError("", $"Algo salió mal al actualizar el registro {parqueNacionalObj.Nombre}");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+        }
     }
 }
