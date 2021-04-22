@@ -50,7 +50,7 @@ namespace ParkyAPI.Repository
             return value;
         }
 
-        public bool parqueNacionalExiste(int id)
+        public bool ParqueNacionalExiste(int id)
         {
             return _db.parquesNacionales.Any(a => a.Id == id);
         }

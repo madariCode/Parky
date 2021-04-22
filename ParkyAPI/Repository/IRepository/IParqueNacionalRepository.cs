@@ -11,7 +11,7 @@ namespace ParkyAPI.Repository.IRepository
         ICollection<ParqueNacional> GetParqueNacionales();
         ParqueNacional GetParqueNacional(int parqueNacionalID);
         bool ParqueNacionalExiste(string nombre);
-        bool parqueNacionalExiste(int id);
+        bool ParqueNacionalExiste(int id);
         bool CrearParqueNacional(ParqueNacional parqueNacional);
         bool UpdateParqueNacional(ParqueNacional parqueNacional);
         bool DeleteParqueNacional(ParqueNacional parqueNacional);
