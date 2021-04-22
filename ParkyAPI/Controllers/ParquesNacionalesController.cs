@@ -82,7 +82,7 @@ namespace ParkyAPI.Controllers
         [HttpPatch("{parqueNacionalId:int}", Name = "ActualizarParqueNacional")]
         public IActionResult ActualizarParqueNacional(int parqueNacionalId, [FromBody] ParqueNacionalDto parqueNacionalDto) 
         {
-            if (parqueNacionalDto == null)
+            if (parqueNacionalDto == null || parqueNacionalId != parqueNacionalDto.Id)
             {
                 return BadRequest(ModelState);
             }
@@ -97,5 +97,6 @@ namespace ParkyAPI.Controllers
 
             return NoContent();
         }
+
     }
 }
