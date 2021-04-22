@@ -13,6 +13,7 @@ namespace ParkyAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class ParquesNacionalesController : ControllerBase
     {
         private IParqueNacionalRepository _pnRepository;
@@ -31,6 +32,8 @@ namespace ParkyAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [ProducesResponseType(200, Type = typeof(List<ParqueNacionalDto>))]
+
         public IActionResult GetParquesNacionales()
         {
             var objLista = _pnRepository.GetParqueNacionales();
@@ -51,6 +54,9 @@ namespace ParkyAPI.Controllers
         /// <param name="parqueNacionalId"></param>
         /// <returns></returns>
         [HttpGet("{parqueNacionalId:int}", Name = "GetParqueNacional")]
+        [ProducesResponseType(200, Type = typeof(ParqueNacionalDto))]
+        [ProducesResponseType(404)]
+        [ProducesDefaultResponseType]
         public IActionResult GetParqueNacional(int parqueNacionalId)
         {
             var obj = _pnRepository.GetParqueNacional(parqueNacionalId);
@@ -65,6 +71,10 @@ namespace ParkyAPI.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(201, Type = typeof(ParqueNacionalDto))]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CrearParqueNacional([FromBody] ParqueNacionalDto parqueNacionalDto)
         {
             if (parqueNacionalDto == null)
@@ -90,6 +100,9 @@ namespace ParkyAPI.Controllers
         }
 
         [HttpPatch("{parqueNacionalId:int}", Name = "ActualizarParqueNacional")]
+        [ProducesResponseType(204)]        
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult ActualizarParqueNacional(int parqueNacionalId, [FromBody] ParqueNacionalDto parqueNacionalDto)
         {
             if (parqueNacionalDto == null || parqueNacionalId != parqueNacionalDto.Id)
@@ -109,6 +122,10 @@ namespace ParkyAPI.Controllers
         }
 
         [HttpDelete("{parqueNacionalId:int}", Name = "EliminarParqueNacional")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult EliminarParqueNacional(int parqueNacionalId)
         {
             if (! _pnRepository.ParqueNacionalExiste(parqueNacionalId))
