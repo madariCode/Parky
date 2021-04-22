@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ParkyAPI</name>
+    </assembly>
+    <members>
+        <member name="M:ParkyAPI.Controllers.ParquesNacionalesController.GetParquesNacionales">
+            <summary>
+            Devuelve una lista de parques nacionales
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ParkyAPI.Controllers.ParquesNacionalesController.GetParqueNacional(System.Int32)">
+            <summary>
+            Devuelve el parque nacional que corresponde al parámetro Id
+            </summary>
+            <param name="parqueNacionalId"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

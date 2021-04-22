@@ -19,12 +19,17 @@ namespace ParkyAPI.Controllers
 
         private readonly IMapper _mapper;
 
+
         public ParquesNacionalesController(IParqueNacionalRepository pnRepo, IMapper mapper)
         {
             _pnRepository = pnRepo;
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Devuelve una lista de parques nacionales
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult GetParquesNacionales()
         {
@@ -40,6 +45,11 @@ namespace ParkyAPI.Controllers
             return Ok(objDto);
         }
 
+        /// <summary>
+        /// Devuelve el parque nacional que corresponde al parámetro Id
+        /// </summary>
+        /// <param name="parqueNacionalId"></param>
+        /// <returns></returns>
         [HttpGet("{parqueNacionalId:int}", Name = "GetParqueNacional")]
         public IActionResult GetParqueNacional(int parqueNacionalId)
         {
