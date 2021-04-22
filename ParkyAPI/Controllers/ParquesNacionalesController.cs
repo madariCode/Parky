@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ParkyAPI.Modelos;
 using ParkyAPI.Modelos.Dtos;
 using ParkyAPI.Repository.IRepository;
 using System;
@@ -39,7 +40,7 @@ namespace ParkyAPI.Controllers
             return Ok(objDto);
         }
 
-        [HttpGet("{parqueNacionalId:int}")]
+        [HttpGet("{parqueNacionalId:int}", Name = "GetParqueNacional")]
         public IActionResult GetParqueNacional(int parqueNacionalId)
         {
             var obj = _pnRepository.GetParqueNacional(parqueNacionalId);
@@ -51,6 +52,31 @@ namespace ParkyAPI.Controllers
 
             var objDto = _mapper.Map<ParqueNacionalDto>(obj);
             return Ok(obj);
+        }
+
+        [HttpPost]
+        public IActionResult CrearParqueNacional([FromBody] ParqueNacionalDto parqueNacionalDto)
+        {
+            if(parqueNacionalDto == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if(_pnRepository.ParqueNacionalExiste(parqueNacionalDto.Nombre))
+            {
+                ModelState.AddModelError("", "El parque nacional ya existe!");
+                return StatusCode(404,ModelState);
+            }
+
+           var parqueNacionalObj = _mapper.Map<ParqueNacional>(parqueNacionalDto);
+
+            if(!_pnRepository.CrearParqueNacional(parqueNacionalObj))
+            {
+                ModelState.AddModelError("", $"Algo salió mal al guardar el registro {parqueNacionalObj.Nombre}");
+                return StatusCode(500, ModelState);
+            }
+
+            return CreatedAtRoute("GetParqueNacional", new { parqueNacionalId = parqueNacionalObj.Id}, parqueNacionalObj);
         }
     }
 }
