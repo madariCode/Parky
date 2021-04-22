@@ -32,7 +32,7 @@ namespace ParkyAPI.Controllers
 
             var objDto = new List<ParqueNacionalDto>();
 
-            foreach(var obj in objLista)
+            foreach (var obj in objLista)
             {
                 objDto.Add(_mapper.Map<ParqueNacionalDto>(obj));
             }
@@ -45,7 +45,7 @@ namespace ParkyAPI.Controllers
         {
             var obj = _pnRepository.GetParqueNacional(parqueNacionalId);
 
-            if(obj == null)
+            if (obj == null)
             {
                 return NotFound();
             }
@@ -57,30 +57,30 @@ namespace ParkyAPI.Controllers
         [HttpPost]
         public IActionResult CrearParqueNacional([FromBody] ParqueNacionalDto parqueNacionalDto)
         {
-            if(parqueNacionalDto == null)
+            if (parqueNacionalDto == null)
             {
                 return BadRequest(ModelState);
             }
 
-            if(_pnRepository.ParqueNacionalExiste(parqueNacionalDto.Nombre))
+            if (_pnRepository.ParqueNacionalExiste(parqueNacionalDto.Nombre))
             {
                 ModelState.AddModelError("", "El parque nacional ya existe!");
-                return StatusCode(404,ModelState);
+                return StatusCode(404, ModelState);
             }
 
-           var parqueNacionalObj = _mapper.Map<ParqueNacional>(parqueNacionalDto);
+            var parqueNacionalObj = _mapper.Map<ParqueNacional>(parqueNacionalDto);
 
-            if(!_pnRepository.CrearParqueNacional(parqueNacionalObj))
+            if (!_pnRepository.CrearParqueNacional(parqueNacionalObj))
             {
                 ModelState.AddModelError("", $"Algo salió mal al guardar el registro {parqueNacionalObj.Nombre}");
                 return StatusCode(500, ModelState);
             }
 
-            return CreatedAtRoute("GetParqueNacional", new { parqueNacionalId = parqueNacionalObj.Id}, parqueNacionalObj);
+            return CreatedAtRoute("GetParqueNacional", new { parqueNacionalId = parqueNacionalObj.Id }, parqueNacionalObj);
         }
 
         [HttpPatch("{parqueNacionalId:int}", Name = "ActualizarParqueNacional")]
-        public IActionResult ActualizarParqueNacional(int parqueNacionalId, [FromBody] ParqueNacionalDto parqueNacionalDto) 
+        public IActionResult ActualizarParqueNacional(int parqueNacionalId, [FromBody] ParqueNacionalDto parqueNacionalDto)
         {
             if (parqueNacionalDto == null || parqueNacionalId != parqueNacionalDto.Id)
             {
@@ -98,5 +98,23 @@ namespace ParkyAPI.Controllers
             return NoContent();
         }
 
+        [HttpDelete("{parqueNacionalId:int}", Name = "EliminarParqueNacional")]
+        public IActionResult EliminarParqueNacional(int parqueNacionalId)
+        {
+            if (! _pnRepository.ParqueNacionalExiste(parqueNacionalId))
+            {
+                return NotFound();
+            }
+
+            var parqueNacionalObj = _pnRepository.GetParqueNacional(parqueNacionalId);
+
+            if (!_pnRepository.DeleteParqueNacional(parqueNacionalObj))
+            {
+                ModelState.AddModelError("", $"Algo salió mal al eliminar el registro {parqueNacionalObj.Nombre}");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
+        }
     }
 }
