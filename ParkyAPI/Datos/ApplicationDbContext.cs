@@ -15,5 +15,6 @@ namespace ParkyAPI.Datos
         }
 
         public DbSet<ParqueNacional> parquesNacionales { get; set; }
+        public DbSet<SenderoDto> senderos { get; set; }
     }
 }
