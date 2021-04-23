@@ -75,7 +75,7 @@ namespace ParkyAPI.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult CrearSendero([FromBody] SenderoDto senderoDto)
+        public IActionResult CrearSendero([FromBody] SenderoCreateDto senderoDto)
         {
             if (senderoDto == null)
             {
@@ -103,7 +103,7 @@ namespace ParkyAPI.Controllers
         [ProducesResponseType(204)]        
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult ActualizarSendero(int senderoId, [FromBody] SenderoDto senderoDto)
+        public IActionResult ActualizarSendero(int senderoId, [FromBody] SenderoUpdateDto senderoDto)
         {
             if (senderoDto == null || senderoId != senderoDto.Id)
             {
