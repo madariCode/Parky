@@ -17,5 +17,18 @@
             <param name="parqueNacionalId"></param>
             <returns></returns>
         </member>
+        <member name="M:ParkyAPI.Controllers.SenderosController.GetSenderos">
+            <summary>
+            Devuelve una lista de senderos
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ParkyAPI.Controllers.SenderosController.GetSendero(System.Int32)">
+            <summary>
+            Devuelve el sendero que corresponde al parámetro Id
+            </summary>
+            <param name="senderoId"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>
