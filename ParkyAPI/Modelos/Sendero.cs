@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ParkyAPI.Modelos
 {
-    public class SenderoDto
+    public class Sendero
     {
         [Key]
         public int Id { get; set; }

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
-using static ParkyAPI.Modelos.SenderoDto;
+using static ParkyAPI.Modelos.Sendero;
 
 namespace ParkyAPI.Modelos.Dtos
 {
