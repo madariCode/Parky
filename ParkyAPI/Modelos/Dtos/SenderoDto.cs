@@ -18,6 +18,6 @@ namespace ParkyAPI.Modelos.Dtos
         public TipoDificultad Dificultad { get; set; }
         [Required]
         public int ParqueNacionalId { get; set; }
-        public ParqueNacional ParqueNacionalDto { get; set; }
+        public ParqueNacionalDto ParqueNacionalDto { get; set; }
     }
 }
