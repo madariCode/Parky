@@ -14,6 +14,7 @@ namespace ParkyAPI.Modelos
         public string Nombre { get; set; }
         [Required]
         public string ComunidadAutonoma { get; set; }
+        public byte[] Imagen { get; set; }
         public DateTime Creado { get; set; }
         public DateTime Establecido { get; set; }
     }
