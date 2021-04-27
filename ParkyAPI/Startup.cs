@@ -38,11 +38,29 @@ namespace ParkyAPI
             services.AddScoped<ISenderoRepository, SenderoRepository>();
             services.AddAutoMapper(typeof(ParkyMappings));
             services.AddSwaggerGen(options => {
-                options.SwaggerDoc("ParkyOpenAPISpec",
+                options.SwaggerDoc("ParkyOpenAPISpecParquesNacionales",
                     new Microsoft.OpenApi.Models.OpenApiInfo()
                     {
-                        Title = "ParkyAPI",
-                        Version = "1"
+                        Title = "Parques nacionales",
+                        Version = "1",
+                        Description = "Especificación API del curso de Bhrugen Patel https://www.dotnetmastery.com/Home/Details?courseId=7",
+                        License = new Microsoft.OpenApi.Models.OpenApiLicense()
+                        {
+                            Name = "MIT License",
+                            Url = new Uri("https://en.wikipedia.org/wiki/MIT_License")
+                        }
+                    });
+                options.SwaggerDoc("ParkyOpenAPISpecSenderos",
+                    new Microsoft.OpenApi.Models.OpenApiInfo()
+                    {
+                        Title = "Senderos",
+                        Version = "1",
+                        Description = "Especificación API del curso de Bhrugen Patel https://www.dotnetmastery.com/Home/Details?courseId=7",
+                        License = new Microsoft.OpenApi.Models.OpenApiLicense()
+                        {
+                            Name = "MIT License",
+                            Url = new Uri("https://en.wikipedia.org/wiki/MIT_License")
+                        }
                     });
                 var xmlComentariosFichero = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlComentariosRuta = Path.Combine(AppContext.BaseDirectory, xmlComentariosFichero);
@@ -64,7 +82,8 @@ namespace ParkyAPI
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {
-                options.SwaggerEndpoint("/swagger/ParkyOpenAPISpec/swagger.json", "Parky API");
+                options.SwaggerEndpoint("/swagger/ParkyOpenAPISpecParquesNacionales/swagger.json", "Parky API Parques Nacionales");
+                options.SwaggerEndpoint("/swagger/ParkyOpenAPISpecSenderos/swagger.json", "Parky API Senderos");
                 options.RoutePrefix = "";
             });
             app.UseRouting();

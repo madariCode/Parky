@@ -13,6 +13,7 @@ namespace ParkyAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "ParkyOpenAPISpecSenderos")]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class SenderosController : ControllerBase
     {
