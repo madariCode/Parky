@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ParkyWeb.Repository.IRepository
 {
-    interface ISenderoRepository : IRepository<Sendero>
+    public interface ISenderoRepository : IRepository<Sendero>
     {       
     }
 }
