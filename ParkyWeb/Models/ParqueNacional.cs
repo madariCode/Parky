@@ -12,6 +12,7 @@ namespace ParkyWeb.Models
         [Required]
         public string Nombre { get; set; }
         [Required]
+        [Display(Name ="Comunidad Autonoma")]
         public string ComunidadAutonoma { get; set; }
         public byte[] Imagen { get; set; }
         public DateTime Creado { get; set; }
