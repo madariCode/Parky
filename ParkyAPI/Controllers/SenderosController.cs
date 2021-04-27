@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace ParkyAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/senderos")]
     [ApiController]
-    [ApiExplorerSettings(GroupName = "ParkyOpenAPISpecSenderos")]
+    //[ApiExplorerSettings(GroupName = "ParkyOpenAPISpecSenderos")]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class SenderosController : ControllerBase
     {

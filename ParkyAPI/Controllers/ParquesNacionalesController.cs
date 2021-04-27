@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace ParkyAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/parquesnacionales")]
     [ApiController]
-    [ApiExplorerSettings(GroupName = "ParkyOpenAPISpecParquesNacionales")]
+    //[ApiExplorerSettings(GroupName = "ParkyOpenAPISpecParquesNacionales")]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class ParquesNacionalesController : ControllerBase
     {
@@ -97,7 +97,8 @@ namespace ParkyAPI.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            return CreatedAtRoute("GetParqueNacional", new { parqueNacionalId = parqueNacionalObj.Id }, parqueNacionalObj);
+            return CreatedAtRoute("GetParqueNacional", new {version = HttpContext.GetRequestedApiVersion().ToString(),
+                                                            parqueNacionalId = parqueNacionalObj.Id }, parqueNacionalObj);
         }
 
         [HttpPatch("{parqueNacionalId:int}", Name = "ActualizarParqueNacional")]
