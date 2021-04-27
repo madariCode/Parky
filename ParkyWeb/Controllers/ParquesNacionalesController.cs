@@ -22,6 +22,26 @@ namespace ParkyWeb.Controllers
             return View(new ParqueNacional() { });
         }
 
+        public async Task<IActionResult> Upsert(int? id)
+        {
+            ParqueNacional obj = new ParqueNacional();
+
+            if(id == null)
+            {
+                //Insertar/Crear
+                return View(obj);
+            }
+            
+            //Update
+            obj = await _pnRepo.GetAsync(SD.ParquesNacionalesAPIPath, id.GetValueOrDefault());
+
+            if(obj == null)
+            {
+                NotFound();
+            }
+            return View(obj);
+        }
+
         public async Task<IActionResult> GetAllParquesNacionales()
         {
             return Json(new { data = await _pnRepo.GetAllAsync(SD.ParquesNacionalesAPIPath) });
