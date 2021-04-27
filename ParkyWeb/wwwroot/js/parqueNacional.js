@@ -21,7 +21,7 @@ function cargarDataTable() {
                                 <a href="/parquesNacionales/Upsert/${data}" class='btn btn-success text-white'
                                     style='cursor:pointer;'> <i class='far fa-edit'></i></a>
                                     &nbsp;
-                                <a onclick=Delete("/parquesNacionales/Eliminar/${data}") class='btn btn-danger text-white'
+                                <a onclick=Eliminar("/parquesNacionales/Eliminar/${data}") class='btn btn-danger text-white'
                                     style='cursor:pointer;'> <i class='far fa-trash-alt'></i></a>
                                 </div>
                             `;

@@ -89,5 +89,17 @@ namespace ParkyWeb.Controllers
         {
             return Json(new { data = await _pnRepo.GetAllAsync(SD.ParquesNacionalesAPIPath) });
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> Eliminar(int id)
+        {
+            var estado = await _pnRepo.DeleteAsync(SD.ParquesNacionalesAPIPath, id);
+            if (estado)
+            {
+                return Json(new { success = true, message = "Eliminado satisfactoriamente" });
+            }
+
+            return Json(new { success = false, message = "Error al intentar eliminar el elemento" });
+        }
     }
 }
