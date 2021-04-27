@@ -68,7 +68,30 @@ namespace ParkyAPI.Controllers
             }
 
             var objDto = _mapper.Map<SenderoDto>(obj);
-            return Ok(obj);
+            return Ok(objDto);
+        }
+
+        [HttpGet("[action]/{parqueNacionalId:int}")]
+        [ProducesResponseType(200, Type = typeof(SenderoDto))]
+        [ProducesResponseType(404)]
+        [ProducesDefaultResponseType]
+        public IActionResult GetSenderoEnParqueNacional(int parqueNacionalId)
+        {
+            var objLista = _sRepository.GetSenderosEnParqueNacional(parqueNacionalId);
+
+            if (objLista == null)
+            {
+                return NotFound();
+            }
+
+            var objDto = new List<SenderoDto>();
+
+            foreach(var obj in objLista)
+            {
+                objDto.Add(_mapper.Map<SenderoDto>(obj));
+            }
+                        
+            return Ok(objLista);
         }
 
         [HttpPost]

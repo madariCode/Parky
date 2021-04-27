@@ -77,9 +77,9 @@ namespace ParkyAPI
                 //            Url = new Uri("https://en.wikipedia.org/wiki/MIT_License")
                 //        }
                 //    });
-                var xmlComentariosFichero = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlComentariosRuta = Path.Combine(AppContext.BaseDirectory, xmlComentariosFichero);
-                options.IncludeXmlComments(xmlComentariosRuta);
+                //var xmlComentariosFichero = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                //var xmlComentariosRuta = Path.Combine(AppContext.BaseDirectory, xmlComentariosFichero);
+                //options.IncludeXmlComments(xmlComentariosRuta);
 
             });
             services.AddControllers();
