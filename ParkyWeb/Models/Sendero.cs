@@ -17,6 +17,6 @@ namespace ParkyWeb.Models
         public TipoDificultad Dificultad { get; set; }
         [Required]
         public int ParqueNacionalId { get; set; }
-        public ParqueNacional ParqueNacionalDto { get; set; }
+        public ParqueNacional ParqueNacional { get; set; }
     }
 }
