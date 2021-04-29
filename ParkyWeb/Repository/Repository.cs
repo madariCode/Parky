@@ -100,7 +100,7 @@ namespace ParkyWeb.Repository
 
         public async Task<bool> UpdateAsync(string url, T objToUpdate)
         {
-            throw new NotImplementedException(); var request = new HttpRequestMessage(HttpMethod.Patch, url);
+            var request = new HttpRequestMessage(HttpMethod.Patch, url);
 
             if (objToUpdate != null)
             {

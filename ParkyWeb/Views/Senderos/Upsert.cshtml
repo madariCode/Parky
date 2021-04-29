@@ -1,0 +1,68 @@
+﻿@model ParkyWeb.Models.ViewModels.SenderosVM
+@{
+    var titulo = "Crear Sendero";
+}
+<form method="post" asp-action="Upsert" enctype="multipart/form-data">
+
+    <div class="row px-2 mx-2 backgroundWhite border">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @if (Model.Sendero != null)
+        {
+            <input type="hidden" asp-for="Sendero.Id" />
+            titulo = "Editar Sendero";
+        }
+        <div class="col-12 p-3">
+            <h2 class="text-primary">@titulo</h2>
+        </div>
+        <div class="col-8">
+            <div class="form-group row">
+                <div class="col-4">
+                    Parque nacional
+                </div>
+                <div class="col-8">
+                    @Html.DropDownListFor(m => m.Sendero.ParqueNacionalId,
+                        Model.ParqueNacionalLista, "-Por favor, seleccione un parque -", new { @class = "form-control" })
+                    <span asp-validation-for="Sendero.ParqueNacionalId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Sendero.Nombre"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Sendero.Nombre" class="form-control">
+                    <span asp-validation-for="Sendero.Nombre" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Sendero.Dificultad"></label>
+                </div>
+                <div class="col-8">
+                    <select asp-for="Sendero.Dificultad"
+                            asp-items="Html.GetEnumSelectList<Sendero.TipoDificultad>()"
+                            class="form-control"></select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Sendero.Distancia"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Sendero.Distancia" class="form-control">
+                    <span asp-validation-for="Sendero.Distancia" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4 offset-4">
+                    <button type="submit" class="btn btn-primary form-control">
+                        @(Model.Sendero.Id != 0 ?"Actualizar":"Crear")
+                    </button>
+                </div>
+                <div class="col-4">
+                    <a asp-action="Index" class="btn btn-success form-control">Volver a listado</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

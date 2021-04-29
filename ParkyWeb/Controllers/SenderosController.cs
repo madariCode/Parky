@@ -36,7 +36,8 @@ namespace ParkyWeb.Controllers
                 {
                     Text = i.Nombre,
                     Value = i.Id.ToString()
-                })
+                }),
+                Sendero = new Sendero()
             };
 
             if (id == null)
@@ -57,23 +58,35 @@ namespace ParkyWeb.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert(SenderosVM objVM)
+        public async Task<IActionResult> Upsert(SenderosVM obj)
         {
             if (ModelState.IsValid)
             {                
-                if (objVM.Sendero.Id == 0)
+                if (obj.Sendero.Id == 0)
                 {
-                    await _sRepo.CreateAsync(SD.SenderosAPIPath, objVM.Sendero);
+                    await _sRepo.CreateAsync(SD.SenderosAPIPath, obj.Sendero);
                 }
                 else
                 {
-                    await _sRepo.UpdateAsync(SD.SenderosAPIPath + objVM.Sendero.Id, objVM.Sendero);
+                    await _sRepo.UpdateAsync(SD.SenderosAPIPath + obj.Sendero.Id, obj.Sendero);
 
                 }
                 return RedirectToAction(nameof(Index));
             }
             else
             {
+                IEnumerable<ParqueNacional> pnLista = await _pnRepo.GetAllAsync(SD.ParquesNacionalesAPIPath);
+
+                SenderosVM objVM = new SenderosVM()
+                {
+                    ParqueNacionalLista = pnLista.Select(i => new SelectListItem
+                    {
+                        Text = i.Nombre,
+                        Value = i.Id.ToString()
+                    }),
+                    Sendero = obj.Sendero
+                };
+
                 return View(objVM);
             }
         }
