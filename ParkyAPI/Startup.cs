@@ -39,6 +39,7 @@ namespace ParkyAPI
                 (options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IParqueNacionalRepository, ParqueNacionalRepository>();
             services.AddScoped<ISenderoRepository, SenderoRepository>();
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddAutoMapper(typeof(ParkyMappings));
             services.AddApiVersioning(options =>
             {
