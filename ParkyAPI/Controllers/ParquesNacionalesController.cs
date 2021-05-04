@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ParkyAPI.Modelos;
@@ -55,6 +56,7 @@ namespace ParkyAPI.Controllers
         /// <param name="parqueNacionalId"></param>
         /// <returns></returns>
         [HttpGet("{parqueNacionalId:int}", Name = "GetParqueNacional")]
+        [Authorize]
         [ProducesResponseType(200, Type = typeof(ParqueNacionalDto))]
         [ProducesResponseType(404)]
         [ProducesDefaultResponseType]
