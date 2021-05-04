@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using ParkyAPI.Datos;
 using ParkyAPI.ParkyMapper;
 using ParkyAPI.Repository;
@@ -19,6 +21,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ParkyAPI
@@ -52,20 +55,45 @@ namespace ParkyAPI
                 options.GroupNameFormat = "'v'VVV";
             });
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigurarOpcionesSwagger>();
-            services.AddSwaggerGen(options =>
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            
+            services.Configure<AppSettings>(appSettingsSection);
+
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            var llave = Encoding.ASCII.GetBytes(appSettings.secreto);
+
+            services.AddAuthentication(x =>
             {
-                options.SwaggerDoc("ParkyOpenAPISpec",
-                    new Microsoft.OpenApi.Models.OpenApiInfo()
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
                     {
-                        Title = "Parky API",
-                        Version = "1",
-                        Description = "Especificación API del curso de Bhrugen Patel https://www.dotnetmastery.com/Home/Details?courseId=7",
-                        License = new Microsoft.OpenApi.Models.OpenApiLicense()
-                        {
-                            Name = "MIT License",
-                            Url = new Uri("https://en.wikipedia.org/wiki/MIT_License")
-                        }
-                    });
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(llave),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
+
+            services.AddSwaggerGen(options =>
+               {
+                   options.SwaggerDoc("ParkyOpenAPISpec",
+                       new Microsoft.OpenApi.Models.OpenApiInfo()
+                       {
+                           Title = "Parky API",
+                           Version = "1",
+                           Description = "Especificación API del curso de Bhrugen Patel https://www.dotnetmastery.com/Home/Details?courseId=7",
+                           License = new Microsoft.OpenApi.Models.OpenApiLicense()
+                           {
+                               Name = "MIT License",
+                               Url = new Uri("https://en.wikipedia.org/wiki/MIT_License")
+                           }
+                       });
                 //options.SwaggerDoc("ParkyOpenAPISpecSenderos",
                 //    new Microsoft.OpenApi.Models.OpenApiInfo()
                 //    {
@@ -83,6 +111,7 @@ namespace ParkyAPI
                 //options.IncludeXmlComments(xmlComentariosRuta);
 
             });
+
             services.AddControllers();
         }
 
@@ -101,7 +130,7 @@ namespace ParkyAPI
                 foreach (var desc in provider.ApiVersionDescriptions)
                 {
                     options.SwaggerEndpoint($"/swagger/{desc.GroupName}/swagger.json",
-                        desc.GroupName.ToUpperInvariant());                    
+                        desc.GroupName.ToUpperInvariant());
                 }
                 options.RoutePrefix = "";
             });
@@ -112,7 +141,11 @@ namespace ParkyAPI
             //    options.RoutePrefix = "";
             //});
             app.UseRouting();
-
+            app.UseCors(x => x
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
