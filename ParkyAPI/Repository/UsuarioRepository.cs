@@ -56,12 +56,27 @@ namespace ParkyAPI.Repository
 
         public bool EsUnicoUsuario(string nombreUsuario)
         {
-            throw new NotImplementedException();
-        }
+            var usuario = _db.usuarios.SingleOrDefault(u => u.Nombre == nombreUsuario);
 
+            //El usuario no se encuentra
+            if (usuario == null)
+                return true;
+
+            return false;
+        }
         public Usuario Registro(string nombreUsuario, string contraseña)
         {
-            throw new NotImplementedException();
+            var usuarioObj = new Usuario()
+            {
+                Nombre = nombreUsuario,
+                contraseña = contraseña
+            };
+
+            _db.usuarios.Add(usuarioObj);
+            _db.SaveChanges();
+            
+            usuarioObj.contraseña = "";
+            return usuarioObj;
         }
     }
 }

@@ -26,11 +26,30 @@ namespace ParkyAPI.Controllers
         public IActionResult Autentificar([FromBody] Usuario modelo)
         {
             var usuario = _uRepo.Autentificar(modelo.Nombre, modelo.contraseña);
-            if(usuario == null)
+            if (usuario == null)
             {
                 return BadRequest(new { message = "El usuario o la contraseña son incorrectos!" });
             }
             return Ok(usuario);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("registro")]
+        public IActionResult Registro([FromBody] Usuario modelo)
+        {
+            bool siNombreUsuarioUnico = _uRepo.EsUnicoUsuario(modelo.Nombre);
+            if (!siNombreUsuarioUnico)
+            {
+                return BadRequest(new { message = "El nombre de usuario ya existe" });
+            }
+            var usuario = _uRepo.Registro(modelo.Nombre, modelo.contraseña);
+
+            if(usuario == null)
+            {
+                return BadRequest(new { message = "Error durante el registro" });
+            }
+
+            return Ok();
         }
     }
 }
