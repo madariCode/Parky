@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +28,8 @@ namespace ParkyWeb
         {
             services.AddScoped<IParqueNacionalRepository, ParqueNacionalRepository>();
             services.AddScoped<ISenderoRepository, SenderoRepository>();
+            services.AddScoped<ICuentaRepository, CuentaRepository>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddHttpClient();
             services.AddSession(opciones =>
