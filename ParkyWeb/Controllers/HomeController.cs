@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ParkyWeb.Models;
 using ParkyWeb.Models.ViewModels;
@@ -15,13 +16,15 @@ namespace ParkyWeb.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IParqueNacionalRepository _pnRepo;
+        private readonly ICuentaRepository _cuentaRepo;
         private readonly ISenderoRepository _sRepo;
 
-        public HomeController(ILogger<HomeController> logger, IParqueNacionalRepository pnRepo, ISenderoRepository sRepo)
+        public HomeController(ILogger<HomeController> logger, IParqueNacionalRepository pnRepo, ISenderoRepository sRepo, ICuentaRepository cuentaRepo)
         {
             _logger = logger;
             _pnRepo = pnRepo;
             _sRepo = sRepo;
+            _cuentaRepo = cuentaRepo;
         }
 
 
@@ -35,6 +38,7 @@ namespace ParkyWeb.Controllers
 
             return View(lista);
         }
+
         public IActionResult Privacy()
         {
             return View();
@@ -44,6 +48,28 @@ namespace ParkyWeb.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            Usuario obj = new Usuario();
+            return View(obj);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(Usuario obj)
+        {
+            Usuario objUsuario = await _cuentaRepo.LoginAsync(SD.CuentaAPIPath + "autentificar/", obj);
+            if(objUsuario.Token == null)
+            {
+                return View();
+            }
+
+            HttpContext.Session.SetString("JWToken", objUsuario.Token);
+
+            return RedirectToAction("~/Home/Index");
         }
     }
 }

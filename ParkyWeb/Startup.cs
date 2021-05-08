@@ -29,6 +29,14 @@ namespace ParkyWeb
             services.AddScoped<ISenderoRepository, SenderoRepository>();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddHttpClient();
+            services.AddSession(opciones =>
+            {
+                //Timeout corto
+                opciones.IdleTimeout = TimeSpan.FromMinutes(10);
+                opciones.Cookie.HttpOnly = true;
+                //Hacer la cookie de sesión esencial
+                opciones.Cookie.IsEssential = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,9 +56,14 @@ namespace ParkyWeb
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseCors(x => x
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
 
+            app.UseSession();
             app.UseAuthorization();
-
+            app.UseAuthentication();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
