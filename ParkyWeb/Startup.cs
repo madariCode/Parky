@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -26,6 +27,16 @@ namespace ParkyWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(opciones =>
+            {
+                opciones.Cookie.HttpOnly = true;
+                opciones.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                opciones.LoginPath = "/Home/Login";
+                opciones.AccessDeniedPath = "/Home/AccessDenied";
+                opciones.SlidingExpiration = true;
+            });
+            services.AddHttpContextAccessor();
             services.AddScoped<IParqueNacionalRepository, ParqueNacionalRepository>();
             services.AddScoped<ISenderoRepository, SenderoRepository>();
             services.AddScoped<ICuentaRepository, CuentaRepository>();
