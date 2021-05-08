@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ParkyWeb.Models;
 using ParkyWeb.Models.ViewModels;
@@ -28,7 +29,7 @@ namespace ParkyWeb.Controllers
 
         public async Task<IActionResult> Upsert(int? id)
         {
-            IEnumerable<ParqueNacional> pnLista = await _pnRepo.GetAllAsync(SD.ParquesNacionalesAPIPath);
+            IEnumerable<ParqueNacional> pnLista = await _pnRepo.GetAllAsync(SD.ParquesNacionalesAPIPath, HttpContext.Session.GetString("JWToken"));
 
             SenderosVM objVM = new SenderosVM()
             {
@@ -47,7 +48,7 @@ namespace ParkyWeb.Controllers
             }
 
             //Update
-            objVM.Sendero = await _sRepo.GetAsync(SD.SenderosAPIPath, id.GetValueOrDefault());
+            objVM.Sendero = await _sRepo.GetAsync(SD.SenderosAPIPath, id.GetValueOrDefault(), HttpContext.Session.GetString("JWToken"));
 
             if (objVM == null)
             {
@@ -61,21 +62,21 @@ namespace ParkyWeb.Controllers
         public async Task<IActionResult> Upsert(SenderosVM obj)
         {
             if (ModelState.IsValid)
-            {                
+            {
                 if (obj.Sendero.Id == 0)
                 {
-                    await _sRepo.CreateAsync(SD.SenderosAPIPath, obj.Sendero);
+                    await _sRepo.CreateAsync(SD.SenderosAPIPath, obj.Sendero, HttpContext.Session.GetString("JWToken"));
                 }
                 else
                 {
-                    await _sRepo.UpdateAsync(SD.SenderosAPIPath + obj.Sendero.Id, obj.Sendero);
+                    await _sRepo.UpdateAsync(SD.SenderosAPIPath + obj.Sendero.Id, obj.Sendero, HttpContext.Session.GetString("JWToken"));
 
                 }
                 return RedirectToAction(nameof(Index));
             }
             else
             {
-                IEnumerable<ParqueNacional> pnLista = await _pnRepo.GetAllAsync(SD.ParquesNacionalesAPIPath);
+                IEnumerable<ParqueNacional> pnLista = await _pnRepo.GetAllAsync(SD.ParquesNacionalesAPIPath, HttpContext.Session.GetString("JWToken"));
 
                 SenderosVM objVM = new SenderosVM()
                 {
@@ -93,13 +94,13 @@ namespace ParkyWeb.Controllers
 
         public async Task<IActionResult> GetAllSenderos()
         {
-            return Json(new { data = await _sRepo.GetAllAsync(SD.SenderosAPIPath) });
+            return Json(new { data = await _sRepo.GetAllAsync(SD.SenderosAPIPath, HttpContext.Session.GetString("JWToken")) });
         }
 
         [HttpDelete]
         public async Task<IActionResult> Eliminar(int id)
         {
-            var estado = await _sRepo.DeleteAsync(SD.SenderosAPIPath, id);
+            var estado = await _sRepo.DeleteAsync(SD.SenderosAPIPath, id, HttpContext.Session.GetString("JWToken"));
             if (estado)
             {
                 return Json(new { success = true, message = "Eliminado satisfactoriamente" });

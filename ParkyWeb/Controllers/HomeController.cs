@@ -32,8 +32,8 @@ namespace ParkyWeb.Controllers
         {
             IndexVM lista = new IndexVM()
             {
-                ParqueNacionalLista = await _pnRepo.GetAllAsync(SD.ParquesNacionalesAPIPath),
-                SenderoLista = await _sRepo.GetAllAsync(SD.SenderosAPIPath)
+                ParqueNacionalLista = await _pnRepo.GetAllAsync(SD.ParquesNacionalesAPIPath, HttpContext.Session.GetString("JWToken")),
+                SenderoLista = await _sRepo.GetAllAsync(SD.SenderosAPIPath, HttpContext.Session.GetString("JWToken"))
             };
 
             return View(lista);
