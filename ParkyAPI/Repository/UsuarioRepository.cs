@@ -41,7 +41,8 @@ namespace ParkyAPI.Repository
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[] {
-                    new Claim(ClaimTypes.Name, usuario.Id.ToString())
+                    new Claim(ClaimTypes.Name, usuario.Id.ToString()),
+                    new Claim(ClaimTypes.Role, usuario.Rol.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials
@@ -69,7 +70,8 @@ namespace ParkyAPI.Repository
             var usuarioObj = new Usuario()
             {
                 Nombre = nombreUsuario,
-                contraseña = contraseña
+                contraseña = contraseña,
+                Rol = "Admin"
             };
 
             _db.usuarios.Add(usuarioObj);

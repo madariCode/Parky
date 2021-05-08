@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ParkyAPI.Modelos;
@@ -58,6 +59,7 @@ namespace ParkyAPI.Controllers
         [ProducesResponseType(200, Type = typeof(SenderoDto))]
         [ProducesResponseType(404)]
         [ProducesDefaultResponseType]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetSendero(int senderoId)
         {
             var obj = _sRepository.GetSendero(senderoId);
