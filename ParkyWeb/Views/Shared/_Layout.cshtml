@@ -8,7 +8,7 @@
     <title>@ViewData["Title"] - ParkyWeb</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css    />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
 </head>
@@ -26,15 +26,17 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+                        @if(User.IsInRole("Admin") || User.IsInRole("test")) { }
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="ParquesNacionales" asp-action="Index">Parques Nacionales</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Senderos" asp-action="Index">Senderos</a>
+                        </li>
+                        }
                         @if (httpAcc.HttpContext.Session.GetString("JWToken") != null &&
-                   httpAcc.HttpContext.Session.GetString("JWToken").ToString().Length > 0)
+                            httpAcc.HttpContext.Session.GetString("JWToken").ToString().Length > 0)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="ParquesNacionales" asp-action="Index">Parques Nacionales</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Senderos" asp-action="Index">Senderos</a>
-                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Home" asp-action="Logout">Logout</a>
                             </li>
@@ -55,6 +57,15 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+            @if(TempData["alert"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @TempData["alert"]
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
             @RenderBody()
         </main>
     </div>

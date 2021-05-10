@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ParkyWeb.Models;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace ParkyWeb.Controllers
 {
+    [Authorize]
     public class SenderosController : Controller
     {
         private readonly IParqueNacionalRepository _pnRepo;
@@ -27,6 +29,7 @@ namespace ParkyWeb.Controllers
             return View(new Sendero());
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Upsert(int? id)
         {
             IEnumerable<ParqueNacional> pnLista = await _pnRepo.GetAllAsync(SD.ParquesNacionalesAPIPath, HttpContext.Session.GetString("JWToken"));
