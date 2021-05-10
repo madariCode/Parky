@@ -33,7 +33,7 @@ namespace ParkyWeb
                 opciones.Cookie.HttpOnly = true;
                 opciones.ExpireTimeSpan = TimeSpan.FromMinutes(30);
                 opciones.LoginPath = "/Home/Login";
-                opciones.AccessDeniedPath = "/Home/AccessDenied";
+                opciones.AccessDeniedPath = "/Home/AccesoDenegado";
                 opciones.SlidingExpiration = true;
             });
             services.AddHttpContextAccessor();
